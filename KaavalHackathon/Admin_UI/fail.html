@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .category-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .category-card h2 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            color: #222;
+        }
+
+        .category-card p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .category-card button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .category-card button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" style="display:flex;align-items:left;">
+        <div class="brand">
+            <div><img src="policeman.png" alt="Anveshan Logo"><h1 style="float:right">Anveshan</h1></div>
+        </div>
+      </nav><br><br>
+    <h1>Admin Portal</h1>
+    <div class="categories">
+        <div class="category-card">
+            <h2>Police & Investigation</h2>
+            <p>Access forms and tools related to police and investigation data.</p>
+            <button>Log In</button>
+        </div>
+
+        <div class="category-card">
+            <h2>AI Tools</h2>
+            <p>Manage AI tools and integrations for analytics and investigation support.</p>
+            <button>Log In</button>
+        </div>
+
+        <div class="category-card">
+            <h2>Analytics Department</h2>
+            <p>Access analytics dashboards and data visualization tools.</p>
+            <button>Log In</button>
+        </div>
+
+        <div class="category-card">
+            <h2>User Accounts</h2>
+            <p>Manage admin and user accounts, roles, and permissions.</p>
+            <button>Log In</button>
+        </div>
+    </div>
+</body>
+</html>

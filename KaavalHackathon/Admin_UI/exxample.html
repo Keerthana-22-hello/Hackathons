@@ -1,0 +1,208 @@
+<!-- Keep the previous HTML head & CSS the same -->
+
+<body>
+  <div class="wrap" role="main">
+    <div>
+      <header>
+        <h1>Admin Portal</h1>
+        <p class="lead">Select a category to log in or view details.</p>
+      </header>
+
+      <section class="cards" aria-label="Admin categories">
+        <article class="card" id="card-police">
+          <h3>Police & Investigation</h3>
+          <p>Access police/admin investigation forms, case tools, and secure data. (District/state scoped access.)</p>
+          <div class="meta">
+            <button class="btn" data-target="police">Log In</button>
+            <button class="btn ghost" data-details="police">Details</button>
+          </div>
+        </article>
+
+        <article class="card" id="card-ai">
+          <h3>AI Tools</h3>
+          <p>Manage AI models, integrations, and scheduling. (Admins can upload, monitor, and configure models.)</p>
+          <div class="meta">
+            <button class="btn" data-target="ai">Log In</button>
+            <button class="btn ghost" data-details="ai">Details</button>
+          </div>
+        </article>
+
+        <article class="card" id="card-analytics">
+          <h3>Analytics Department</h3>
+          <p>Access analytics dashboards and visualizations. (Country scoped access.)</p>
+          <div class="meta">
+            <button class="btn" data-target="analytics">Log In</button>
+            <button class="btn ghost" data-details="analytics">Details</button>
+          </div>
+        </article>
+
+        <article class="card" id="card-users">
+          <h3>User Accounts</h3>
+          <p>Manage users, roles, and permissions. (Admins can create, edit, or delete users.)</p>
+          <div class="meta">
+            <button class="btn" data-target="users">Log In</button>
+            <button class="btn ghost" data-details="users">Details</button>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <aside class="panel" aria-live="polite">
+      <div id="panel-default">
+        <h2>Welcome — Select a category</h2>
+        <p class="note">Click a category's <strong>Log In</strong> or <strong>Details</strong> button to view its panel here.</p>
+      </div>
+
+      <!-- Police login form (unchanged) -->
+      <div id="form-police" style="display:none;">
+        <!-- Police form code here -->
+      </div>
+
+      <!-- AI Tools login form -->
+      <div id="form-ai" style="display:none;">
+        <h2>AI Tools Admin Login</h2>
+        <p class="note">Fields: name, password, role (Admin/Moderator).</p>
+        <div id="feedback-ai" class="feedback"></div>
+        <form id="aiForm" novalidate>
+          <label for="ai-name">Name</label>
+          <input id="ai-name" name="name" type="text" placeholder="Admin name" required>
+          <label for="ai-password">Password</label>
+          <input id="ai-password" name="password" type="password" placeholder="••••••••" minlength="6" required>
+          <label for="ai-role">Role</label>
+          <select id="ai-role" name="role" required>
+            <option value="">Select role</option>
+            <option>Admin</option>
+            <option>Moderator</option>
+          </select>
+          <div class="actions">
+            <button class="btn" type="submit">Sign in</button>
+            <button type="button" class="btn ghost" data-action="cancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Analytics login form (unchanged) -->
+      <div id="form-analytics" style="display:none;">
+        <!-- Analytics form code here -->
+      </div>
+
+      <!-- User Accounts login form -->
+      <div id="form-users" style="display:none;">
+        <h2>User Accounts Admin Login</h2>
+        <p class="note">Fields: name, password, role (Admin/Manager).</p>
+        <div id="feedback-users" class="feedback"></div>
+        <form id="usersForm" novalidate>
+          <label for="u-name">Name</label>
+          <input id="u-name" name="name" type="text" placeholder="Admin name" required>
+          <label for="u-password">Password</label>
+          <input id="u-password" name="password" type="password" placeholder="••••••••" minlength="6" required>
+          <label for="u-role">Role</label>
+          <select id="u-role" name="role" required>
+            <option value="">Select role</option>
+            <option>Admin</option>
+            <option>Manager</option>
+          </select>
+          <div class="actions">
+            <button class="btn" type="submit">Sign in</button>
+            <button type="button" class="btn ghost" data-action="cancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const targetButtons = document.querySelectorAll('[data-target]');
+    const detailButtons = document.querySelectorAll('[data-details]');
+    const panelDefault = document.getElementById('panel-default');
+    const formPolice = document.getElementById('form-police');
+    const formAnalytics = document.getElementById('form-analytics');
+    const formAI = document.getElementById('form-ai');
+    const formUsers = document.getElementById('form-users');
+
+    function showPanel(name){
+      panelDefault.style.display='none';
+      formPolice.style.display='none';
+      formAnalytics.style.display='none';
+      formAI.style.display='none';
+      formUsers.style.display='none';
+
+      if(name==='police') formPolice.style.display='block';
+      else if(name==='analytics') formAnalytics.style.display='block';
+      else if(name==='ai') formAI.style.display='block';
+      else if(name==='users') formUsers.style.display='block';
+      else panelDefault.style.display='block';
+    }
+
+    targetButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=> showPanel(btn.dataset.target));
+    });
+
+    // Cancel buttons
+    document.querySelectorAll('[data-action="cancel"]').forEach(btn=>{
+      btn.addEventListener('click', ()=> showPanel());
+    });
+
+    // Details buttons
+    detailButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const cat = btn.dataset.details;
+        panelDefault.innerHTML = `<h2>${cat.charAt(0).toUpperCase()+cat.slice(1)} — Details</h2>
+          <p>${document.getElementById('card-'+cat).querySelector('p').textContent}</p>
+          <p class="note">Click 'Cancel' to return.</p>`;
+        showPanel();
+      });
+    });
+
+    // Simple client-side validation
+    function showFeedback(el,text,type='success'){el.className='feedback show '+(type==='error'?'error':'success'); el.textContent=text; setTimeout(()=>el.classList.remove('show'),4500);}
+
+    document.getElementById('policeForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const name=document.getElementById('p-name').value.trim(),
+            pwd=document.getElementById('p-password').value,
+            district=document.getElementById('p-district').value.trim(),
+            state=document.getElementById('p-state').value;
+      if(!name||!pwd||!district||!state){showFeedback(document.getElementById('feedback-police'),'Please fill all fields','error');return}
+      if(pwd.length<6){showFeedback(document.getElementById('feedback-police'),'Password must be at least 6 characters','error');return}
+      showFeedback(document.getElementById('feedback-police'),`Welcome ${name} — Police login successful.`);
+      e.target.reset();
+    });
+
+    document.getElementById('analyticsForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const name=document.getElementById('a-name').value.trim(),
+            pwd=document.getElementById('a-password').value,
+            country=document.getElementById('a-country').value;
+      if(!name||!pwd||!country){showFeedback(document.getElementById('feedback-analytics'),'Please fill all fields','error');return}
+      if(pwd.length<6){showFeedback(document.getElementById('feedback-analytics'),'Password must be at least 6 characters','error');return}
+      showFeedback(document.getElementById('feedback-analytics'),`Welcome ${name} — Analytics login successful.`);
+      e.target.reset();
+    });
+
+    document.getElementById('aiForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const name=document.getElementById('ai-name').value.trim(),
+            pwd=document.getElementById('ai-password').value,
+            role=document.getElementById('ai-role').value;
+      if(!name||!pwd||!role){showFeedback(document.getElementById('feedback-ai'),'Please fill all fields','error');return}
+      if(pwd.length<6){showFeedback(document.getElementById('feedback-ai'),'Password must be at least 6 characters','error');return}
+      showFeedback(document.getElementById('feedback-ai'),`Welcome ${name} — AI Tools login successful.`);
+      e.target.reset();
+    });
+
+    document.getElementById('usersForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const name=document.getElementById('u-name').value.trim(),
+            pwd=document.getElementById('u-password').value,
+            role=document.getElementById('u-role').value;
+      if(!name||!pwd||!role){showFeedback(document.getElementById('feedback-users'),'Please fill all fields','error');return}
+      if(pwd.length<6){showFeedback(document.getElementById('feedback-users'),'Password must be at least 6 characters','error');return}
+      showFeedback(document.getElementById('feedback-users'),`Welcome ${name} — User Accounts login successful.`);
+      e.target.reset();
+    });
+
+    showPanel();
+  </script>
+</body>
+</html>

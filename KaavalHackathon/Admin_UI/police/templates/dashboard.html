@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Police Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { margin: 0; font-family: Arial; background-color: #1c1c28; color: #fff; }
+        .sidebar { height: 100vh; width: 220px; position: fixed; background-color: #101021; padding-top: 20px; }
+        .sidebar a { padding: 15px 20px; display: block; color: #ccc; text-decoration: none; margin-bottom: 5px; }
+        .sidebar a:hover { background-color: #22223b; color: #fff; }
+        .main { margin-left: 220px; padding: 20px; }
+        .stats { display: flex; gap: 20px; margin-bottom: 20px; }
+        .stat-box { background-color: #22223b; padding: 20px; border-radius: 8px; flex: 1; text-align: center; }
+        .section { background-color: #22223b; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .quick-actions button { margin-right: 10px; margin-bottom: 10px; padding: 10px 20px; background-color: #4a90e2; border: none; border-radius: 5px; color: #fff; cursor: pointer; }
+        .quick-actions button:hover { background-color: #357ab8; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <a href="#">Cases</a>
+    <a href="#">Personnel</a>
+    <a href="#">Reports</a>
+    <a href="#">Alerts</a>
+    <a href="#">Settings</a>
+</div>
+
+<div class="main">
+    <h1>Police Admin Dashboard</h1>
+
+    <div class="stats">
+        <div class="stat-box">
+            <h2>Total Cases</h2>
+            <p>{{ total_cases }}</p>
+        </div>
+        <div class="stat-box">
+            <h2>Active Cases</h2>
+            <p>{{ active_cases }}</p>
+        </div>
+        <div class="stat-box">
+            <h2>Solved Cases</h2>
+            <p>{{ solved_cases }}</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Recent Activities</h2>
+        <ul>
+            {% for case in cases %}
+                <li>Case #{{ case['case_id'] }}: {{ case['title'] }} ({{ case['status'] }}) - Type: {{ case['crime_type'] }}</li>
+            {% endfor %}
+        </ul>
+       
+        </ul>
+    </div>
+
+    <div class="section quick-actions">
+        <h2>Quick Actions</h2>
+        <a href="{{ url_for('add_case') }}"><button>Add Case</button></a>
+        <a href="{{ url_for('update_personnel') }}"><button>Update Personnel</button></a>
+        <button>Generate Report</button>
+    </div>
+
+    <div class="section">
+        <h2>Analytics Snapshot</h2>
+        <canvas id="crimeChart" width="400" height="150"></canvas>
+    </div>
+</div>
+
+
+ <script>
+    const crimeTypes = {{ crime_types|tojson|safe }};
+    const crimeCounts = {{ crime_counts|tojson|safe }};
+
+    const ctx = document.getElementById('crimeChart').getContext('2d');
+    const crimeChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: crimeTypes,
+            datasets: [{
+                label: 'Cases this Month',
+                data: crimeCounts,
+                backgroundColor: ['#ff4c4c', '#4a90e2', '#f5a623', '#50e3c2']
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+</script>
+</body>
+</html>

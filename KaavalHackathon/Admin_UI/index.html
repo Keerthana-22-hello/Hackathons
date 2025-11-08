@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Portal — Login & Details</title>
+  <style>
+    :root{
+      --bg:#f5f8fa;
+      --card:#ffffff;
+      --accent:#1f6feb;
+      --muted:#6b7280;
+      --success:#10b981;
+      --danger:#ef4444;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #eef6ff 0%, var(--bg) 100%);
+      display:flex;
+      justify-content:center;
+      padding:40px 20px;
+      min-height:100vh;
+    }
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:28px;
+    }
+    header h1{margin-bottom:6px;font-size:28px;}
+    p.lead{margin-bottom:20px;color:var(--muted);}
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:0 8px 30px rgba(17,24,39,0.06);
+      display:flex;
+      flex-direction:column;
+      min-height:140px;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{
+      transform: translateY(-6px);
+      box-shadow:0 18px 40px rgba(17,24,39,0.08);
+    }
+    .card h3{margin:0 0 8px 0;font-size:16.5px;}
+    .card p{margin:0 0 16px 0;color:var(--muted);font-size:14px;line-height:1.35;}
+    .card .meta{margin-top:auto; display:flex; gap:10px; align-items:center}
+    .btn{
+      background:var(--accent);
+      color:white;
+      border:0;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .btn.ghost{
+      background:transparent;
+      color:var(--accent);
+      border:1px solid rgba(31,111,235,0.12);
+      box-shadow:none;
+    }
+
+    .panel{
+      grid-column:2/3;
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(250,250,250,0.9));
+      border-radius:16px;
+      padding:22px;
+      box-shadow: 0 14px 40px rgba(2,6,23,0.06);
+      position:sticky;
+      top:24px;
+      min-height:250px;
+    }
+    .panel h2{margin:0 0 6px 0; font-size:18px}
+    .panel p{margin:0 0 14px 0;color:var(--muted);font-size:14px}
+
+    form{margin-top:10px; display:flex; flex-direction:column; gap:12px}
+    label{font-size:13px;color:#374151}
+    input, select{
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid #e6e9ee;
+      background:white;
+      font-size:14px;
+      outline:none;
+    }
+    input:focus, select:focus{box-shadow:0 6px 20px rgba(31,111,235,0.08); border-color: rgba(31,111,235,0.22)}
+    .row{display:flex; gap:10px}
+    .row .col{flex:1}
+    .note{font-size:13px;color:var(--muted)}
+    .feedback{font-size:13px;padding:10px;border-radius:10px;display:none}
+    .feedback.show{display:block}
+    .feedback.success{background: rgba(16,185,129,0.12); color: #064e3b; border:1px solid rgba(16,185,129,0.18)}
+    .feedback.error{background: rgba(239,68,68,0.08); color:#7f1d1d; border:1px solid rgba(239,68,68,0.12)}
+    .actions{display:flex; gap:8px; margin-top:6px}
+    @media (max-width:980px){.wrap{grid-template-columns:1fr}}
+    @media (max-width:560px){.cards{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <div>
+      <nav class="navbar" style="display:flex;">
+        <div class="brand">
+            <div><img src="policeman.png" alt="Anveshan Logo"><h1 style="float:right">Kaavalkaaran</h1></div>
+        </div>
+      </nav>
+      <header>
+        <h1>Admin Portal</h1>
+        <p class="lead">Select a category to log in or view details.</p>
+      </header>
+
+      <section class="cards" aria-label="Admin categories">
+        <article class="card" id="card-police">
+          <h3>Police & Investigation</h3>
+          <p>Access police/admin investigation forms, case tools, and secure data. (District/state scoped access.)</p>
+          <div class="meta">
+            <button class="btn" data-target="police">Log In</button>
+            <button class="btn ghost" data-details="police">Details</button>
+          </div>
+        </article>
+
+        <article class="card" id="card-ai">
+          <h3>AI Tools</h3>
+          <p>Manage AI integrations, model scheduling, and tool configuration. (Coming soon.)</p>
+          <div class="meta">
+            <button class="btn" data-target="ai">Log In</button>
+            <button class="btn ghost" data-details="ai">Details</button>
+          </div>
+        </article>
+
+        <article class="card" id="card-analytics">
+          <h3>Analytics Department</h3>
+          <p>Access analytics dashboards and visualizations. (Country scoped access.)</p>
+          <div class="meta">
+            <button class="btn" data-target="analytics">Log In</button>
+            <button class="btn ghost" data-details="analytics">Details</button>
+          </div>
+        </article>
+
+        <article class="card" id="card-users">
+          <h3>User Accounts</h3>
+          <p>Manage users, roles, and permissions. (Coming soon.)</p>
+          <div class="meta">
+            <button class="btn" data-target="users">Log In</button>
+            <button class="btn ghost" data-details="users">Details</button>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <aside class="panel" aria-live="polite">
+      <div id="panel-default">
+        <h2>Welcome — Select a category</h2>
+        <p class="note">Click a category's <strong>Log In</strong> or <strong>Details</strong> button to view its panel here.</p>
+      </div>
+
+      <div id="form-police" style="display:none;">
+        <h2>Police Admin Login</h2>
+        <p class="note">Fields: name, password, district, state.</p>
+        <div id="feedback-police" class="feedback"></div>
+        <form id="policeForm" novalidate>
+          <label for="p-name">Name</label>
+          <input id="p-name" name="name" type="text" placeholder="Officer name" required>
+          <label for="p-password">Password</label>
+          <input id="p-password" name="password" type="password" placeholder="••••••••" minlength="6" required>
+          <div class="row">
+            <div class="col"><label for="p-district">District</label><input id="p-district" name="district" type="text" placeholder="District" required></div>
+            <div class="col"><label for="p-state">State</label>
+              <select id="p-state" name="state" required>
+                <option value="">Select state</option>
+                <option>Andhra Pradesh</option>
+                <option>Arunachal Pradesh</option>
+                <option>Assam</option>
+                <option>Bihar</option>
+                <option>Chhattisgarh</option>
+                <option>Goa</option>
+                <option>Gujarat</option>
+                <option>Haryana</option>
+                <option>Himachal Pradesh</option>
+                <option>Jharkhand</option>
+                <option>Karnataka</option>
+                <option>Kerala</option>
+                <option>Madhya Pradesh</option>
+                <option>Maharashtra</option>
+                <option>Manipur</option>
+                <option>Meghalaya</option>
+                <option>Mizoram</option>
+                <option>Nagaland</option>
+                <option>Odisha</option>
+                <option>Punjab</option>
+                <option>Rajasthan</option>
+                <option>Sikkim</option>
+                <option>Tamil Nadu</option>
+                <option>Telangana</option>
+                <option>Tripura</option>
+                <option>Uttar Pradesh</option>
+                <option>Uttarakhand</option>
+                <option>West Bengal</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions"><button class="btn" type="submit">Sign in</button><button type="button" class="btn ghost" data-action="cancel">Cancel</button></div>
+        </form>
+      </div>
+
+      <div id="form-analytics" style="display:none;">
+        <h2>Analytics Login</h2>
+        <p class="note">Fields: name, password, country.</p>
+        <div id="feedback-analytics" class="feedback"></div>
+        <form id="analyticsForm" novalidate>
+          <label for="a-name">Name</label>
+          <input id="a-name" name="name" type="text" placeholder="Analyst name" required>
+          <label for="a-password">Password</label>
+          <input id="a-password" name="password" type="password" placeholder="••••••••" minlength="6" required>
+          <label for="a-country">Country</label>
+          <select id="a-country" name="country" required>
+            <option value="">Select country</option>
+            <option>India</option>
+            <option>United States</option>
+            <option>Other</option>
+          </select>
+          <div class="actions"><button class="btn" type="submit">Sign in</button><button type="button" class="btn ghost" data-action="cancel">Cancel</button></div>
+        </form>
+      </div>
+      <div id="form-ai" style="display:none;">
+        <h2>AI Tools Admin Login</h2>
+        <p class="note">Fields: name, password, role (Admin/Moderator).</p>
+        <div id="feedback-ai" class="feedback"></div>
+        <form id="aiForm" novalidate>
+          <label for="ai-name">Name</label>
+          <input id="ai-name" name="name" type="text" placeholder="Admin name" required>
+          <label for="ai-password">Password</label>
+          <input id="ai-password" name="password" type="password" placeholder="••••••••" minlength="6" required>
+          <label for="ai-role">Role</label>
+          <select id="ai-role" name="role" required>
+            <option value="">Select role</option>
+            <option>Admin</option>
+            <option>Moderator</option>
+          </select>
+          <div class="actions">
+            <button class="btn" type="submit">Sign in</button>
+            <button type="button" class="btn ghost" data-action="cancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <div id="form-users" style="display:none;">
+        <h2>User Accounts Admin Login</h2>
+        <p class="note">Fields: name, password, role (Admin/Manager).</p>
+        <div id="feedback-users" class="feedback"></div>
+        <form id="usersForm" novalidate>
+          <label for="u-name">Name</label>
+          <input id="u-name" name="name" type="text" placeholder="Admin name" required>
+          <label for="u-password">Password</label>
+          <input id="u-password" name="password" type="password" placeholder="••••••••" minlength="6" required>
+          <label for="u-role">Role</label>
+          <select id="u-role" name="role" required>
+            <option value="">Select role</option>
+            <option>Admin</option>
+            <option>Manager</option>
+          </select>
+          <div class="actions">
+            <button class="btn" type="submit">Sign in</button>
+            <button type="button" class="btn ghost" data-action="cancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const targetButtons = document.querySelectorAll('[data-target]');
+    const detailButtons = document.querySelectorAll('[data-details]');
+
+    const panelDefault = document.getElementById('panel-default');
+    const formPolice = document.getElementById('form-police');
+    const formAnalytics = document.getElementById('form-analytics');
+    const formAI = document.getElementById('form-ai');
+    const formUsers = document.getElementById('form-users');
+
+    function showPanel(name){
+      panelDefault.style.display='none';
+      formPolice.style.display='none';
+      formAI.style.display='none';
+      formUsers.style.display='none';
+      formAnalytics.style.display='none';
+
+      if(name==='police') formPolice.style.display='block';
+      else if(name==='analytics') formAnalytics.style.display='block';
+      else if(name==='ai') formAI.style.display='block';
+      else if(name==='users') formUsers.style.display='block';
+      else panelDefault.style.display='block';
+    }
+
+    targetButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=> {
+        showPanel(btn.dataset.target);
+      });
+    });
+
+    // Cancel buttons
+    document.querySelectorAll('[data-action="cancel"]').forEach(btn=>{
+      btn.addEventListener('click', ()=> showPanel());
+    });
+
+    // Details buttons
+    detailButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const cat = btn.dataset.details;
+        panelDefault.innerHTML = `<h2>${cat.charAt(0).toUpperCase()+cat.slice(1)} — Details</h2><p>${document.getElementById('card-'+cat).querySelector('p').textContent}</p><p class="note">Click 'Cancel' to return.</p>`;
+        showPanel();
+      });
+    });
+
+    // Simple client-side validation
+    
+    document.getElementById('policeForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const name=document.getElementById('p-name').value.trim(),
+            pwd=document.getElementById('p-password').value,
+            district=document.getElementById('p-district').value.trim(),
+            state=document.getElementById('p-state').value;
+      if(!name||!pwd||!district||!state){showFeedback(document.getElementById('feedback-police'),'Please fill all fields','error');return}
+      if(pwd.length<6){showFeedback(document.getElementById('feedback-police'),'Password must be at least 6 characters','error');return}
+      showFeedback(document.getElementById('feedback-police'),`Welcome ${name} — Police login successful.`);
+      e.target.reset();
+    });
+
+    document.getElementById('analyticsForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const name=document.getElementById('a-name').value.trim(),
+            pwd=document.getElementById('a-password').value,
+            country=document.getElementById('a-country').value;
+      if(!name||!pwd||!country){showFeedback(document.getElementById('feedback-analytics'),'Please fill all fields','error');return}
+      if(pwd.length<6){showFeedback(document.getElementById('feedback-analytics'),'Password must be at least 6 characters','error');return}
+      showFeedback(document.getElementById('feedback-analytics'),`Welcome ${name} — Analytics login successful.`);
+      e.target.reset();
+    });
+
+    document.getElementById('aiForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const name=document.getElementById('ai-name').value.trim(),
+            pwd=document.getElementById('ai-password').value,
+            role=document.getElementById('ai-role').value;
+      if(!name||!pwd||!role){showFeedback(document.getElementById('feedback-ai'),'Please fill all fields','error');return}
+      if(pwd.length<6){showFeedback(document.getElementById('feedback-ai'),'Password must be at least 6 characters','error');return}
+      showFeedback(document.getElementById('feedback-ai'),`Welcome ${name} — AI Tools login successful.`);
+      e.target.reset();
+    });
+
+    document.getElementById('usersForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const name=document.getElementById('u-name').value.trim(),
+            pwd=document.getElementById('u-password').value,
+            role=document.getElementById('u-role').value;
+      if(!name||!pwd||!role){showFeedback(document.getElementById('feedback-users'),'Please fill all fields','error');return}
+      if(pwd.length<6){showFeedback(document.getElementById('feedback-users'),'Password must be at least 6 characters','error');return}
+      showFeedback(document.getElementById('feedback-users'),`Welcome ${name} — User Accounts login successful.`);
+      e.target.reset();
+    });
+
+    showPanel();
+  </script>
+</body>
+</html>

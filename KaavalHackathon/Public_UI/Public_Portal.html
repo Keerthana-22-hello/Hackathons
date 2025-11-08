@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Missing Person — Public Portal (Prototype)</title>
+  <link rel="stylesheet" href="style.css" />
+  <!--<style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#0ea5ff; --muted:#94a3b8; --glass: rgba(255,255,255,0.03);
+      --success:#10b981; --danger:#ef4444; --maxw:1100px;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:linear-gradient(180deg,#071023 0%, #071426 100%); color:#e6eef8; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:32px}
+    /*.wrap{max-width:var(--maxw); width:100%; display:grid; grid-template-columns: 460px 1fr; gap:28px}*/
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; padding:20px; box-shadow: 0 6px 18px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03)}
+
+    /* Left: upload */
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--accent), #7c3aed); font-weight:700}
+    h1{font-size:18px;margin:6px 0 0}
+    p.lead{color:var(--muted); margin-top:6px; font-size:13px}
+
+    .drop{margin-top:18px; border:2px dashed rgba(255,255,255,0.06); border-radius:12px; padding:18px; display:flex; gap:16px; align-items:center; cursor:pointer; background:var(--glass); transition:all .18s}
+    .drop.drag{border-color:rgba(14,165,255,0.55); transform:translateY(-2px)}
+    .drop img.preview{width:120px; height:120px; object-fit:cover; border-radius:8px; background:#081226}
+
+    .drop .meta{flex:1}
+    .muted{color:var(--muted); font-size:13px}
+    .btn{display:inline-block; padding:10px 14px; border-radius:10px; background:linear-gradient(90deg,var(--accent), #7c3aed); color:#021129; font-weight:600; cursor:pointer; border:none}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--accent)}
+
+    form.fields{margin-top:16px; display:grid; gap:12px}
+    label{font-size:13px; color:var(--muted)}
+    input[type=text], input[type=date], textarea, select{width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit; outline:none}
+    textarea{min-height:90px; resize:vertical}
+
+    .row{display:flex; gap:12px}
+    .row .col{flex:1}
+
+    .actions{display:flex; gap:10px; align-items:center; margin-top:6px}
+
+    /* Right: results */
+    .searchbar{display:flex; gap:10px; align-items:center}
+    .searchbar input{flex:1; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent}
+
+    .results{margin-top:16px; display:grid; gap:12px}
+    .card{display:flex; gap:12px; align-items:center; padding:12px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.02)}
+    .card img{width:72px; height:72px; border-radius:8px; object-fit:cover; background:#061222}
+    .score{margin-left:auto; text-align:right}
+    .score .val{font-weight:700; font-size:18px}
+    .score .muted{font-size:12px}
+
+    .placeholder{border-radius:10px; padding:18px; display:flex; gap:12px; align-items:center; justify-content:center; color:var(--muted); border:1px dashed rgba(255,255,255,0.03); background:linear-gradient(180deg, rgba(255,255,255,0.008), transparent)}
+
+    /* progress modal */
+    .modal{position:fixed; left:0; top:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:rgba(2,6,23,0.6); z-index:60; backdrop-filter: blur(3px)}
+    .modal .box{background:#071022; padding:18px; border-radius:12px; width:420px; text-align:center}
+    .progress{height:12px; background:rgba(255,255,255,0.03); border-radius:999px; overflow:hidden; margin-top:12px}
+    .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--accent), #7c3aed); transition:width .4s}
+
+    footer.note{margin-top:12px; color:var(--muted); font-size:13px; text-align:center}
+
+   
+    @media (max-width:980px){ .wrap{grid-template-columns:1fr; padding:0} .drop img.preview{display:none} }
+
+    /* small helpers */
+    .tiny{font-size:12px;color:var(--muted)}
+    .pill{padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.04);display:inline-block}
+  </style>*/-->
+</head>
+<body>
+  <div class="wrap">
+    <div class="wrap">
+      <nav class="navbar" style="display:flex;">
+        <div class="brand">
+            <div><img src="policeman.png" alt="Anveshan Logo"><h1 style="float:right">Anveshan</h1></div>
+        </div>
+        <div>
+          <a href="index.html">Home</a>
+          <a href="Public_Portal.html">Upload</a>
+          <a href="public_contact.html">Contact</a>
+        </div>
+      </nav>
+     
+
+    <!-- LEFT: Upload + form -->
+
+      <div id="drop" class="drop" tabindex="0">
+        <img class="preview" id="imgPreview" src="" alt="preview" style="display:none">
+        <div class="meta">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div>
+              <strong id="dropTitle">Drag & drop photo or click to upload</strong>
+              <div class="tiny muted">Recommended: clear face photo (jpg/png), max 10MB</div>
+            </div>
+          </div>
+          <div style="margin-top:10px">
+            <button class="btn" id="selectBtn">Choose photo</button>
+          </div>
+        </div>
+        <input id="fileInput" type="file" accept="image/*" style="display:none">
+      </div>
+
+      <form class="fields" id="reportForm" onsubmit="return false;">
+        <div class="row">
+          <div class="col">
+            <label for="name">Name (optional)</label>
+            <input id="name" type="text" placeholder="Full name or nickname">
+          </div>
+          <div class="col">
+            <label for="age">Age (approx.)</label>
+            <input id="age" type="text" placeholder="e.g., 32">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="lastSeen">Last seen date</label>
+            <input id="lastSeen" type="date">
+          </div>
+          <div class="col">
+            <label for="location">Last known location</label>
+            <input id="location" type="text" placeholder="City / area">
+          </div>
+        </div>
+
+        <div>
+          <label for="details">Additional details</label>
+          <textarea id="details" placeholder="Clothing, scars, identification marks, contact info..."></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="btn" id="submitBtn">Search for matches</button>
+          <button class="btn ghost" id="saveDraft">Save draft</button>
+          <div style="margin-left:auto;" class="tiny muted">Your upload is private and shared only with authorities.</div>
+        </div>
+      </form>
+
+      <div class="tiny" style="margin-top:12px">Tip: Upload multiple photos later from the results page to improve matching accuracy.</div>
+    </section>
+
+    <!-- RIGHT: Results -->
+    <aside class="panel">
+      <div style="display:flex; align-items:center; justify-content:space-between">
+        <div>
+          <h2 style="margin:0; font-size:16px">Search & Results</h2>
+          <div class="tiny muted">Recent matches & suggestions</div>
+        </div>
+        <div class="pill">Public Portal</div>
+      </div>
+
+      <div style="margin-top:12px" class="searchbar">
+        <input id="quickSearch" placeholder="Search by name, area or ID">
+        <button class="btn ghost" id="filterBtn">Filters</button>
+      </div>
+
+      <div class="results" id="resultsArea">
+        <div class="placeholder" id="noResults">
+          <div>
+            <strong>No results yet</strong>
+            <div class="muted">Upload a photo and click "Search for matches" to begin.</div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="note">If you spot a possible match, click "Report" and provide any extra details. Authorities will be notified.</footer>
+    </aside>
+  </div>
+
+  <!-- Modal: processing -->
+  <div id="modal" class="modal" style="display:none">
+    <div class="box">
+      <div style="font-weight:700">Searching for matches...</div>
+      <div class="muted tiny" style="margin-top:6px">Our system compares your photo against the database (face detection, embeddings, and similarity scoring).</div>
+      <div class="progress"><div id="bar" class="bar"></div></div>
+      <div style="margin-top:10px; display:flex; gap:8px; justify-content:center">
+        <button class="btn" id="cancelSearch">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Basic interactivity for prototype
+    const drop = document.getElementById('drop');
+    const fileInput = document.getElementById('fileInput');
+    const imgPreview = document.getElementById('imgPreview');
+    const dropTitle = document.getElementById('dropTitle');
+    const selectBtn = document.getElementById('selectBtn');
+    const useCamera = document.getElementById('useCamera');
+    const submitBtn = document.getElementById('submitBtn');
+    const modal = document.getElementById('modal');
+    const bar = document.getElementById('bar');
+    const resultsArea = document.getElementById('resultsArea');
+    const noResults = document.getElementById('noResults');
+
+    let selectedFile = null;
+
+    // Open file selector
+    selectBtn.addEventListener('click', ()=> fileInput.click());
+    drop.addEventListener('click', ()=> fileInput.click());
+
+    // Drag & drop UI
+    ['dragenter','dragover'].forEach(evt=> drop.addEventListener(evt, e=>{ e.preventDefault(); drop.classList.add('drag'); }));
+    ['dragleave','drop'].forEach(evt=> drop.addEventListener(evt, e=>{ e.preventDefault(); drop.classList.remove('drag'); }));
+
+    drop.addEventListener('drop', e=>{
+      const f = e.dataTransfer.files[0];
+      if(f) handleFile(f);
+    });
+
+    fileInput.addEventListener('change', e=>{
+      const f = e.target.files[0];
+      if(f) handleFile(f);
+    });
+
+    function handleFile(file){
+      if(!file.type.startsWith('image/')){ alert('Please upload an image file.'); return; }
+      selectedFile = file;
+      const url = URL.createObjectURL(file);
+      imgPreview.src = url; imgPreview.style.display = 'block';
+      dropTitle.textContent = file.name;
+    }
+
+    // Use camera (browser) -- prototype: opens camera if available
+    useCamera.addEventListener('click', async ()=>{
+      if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+        alert('Camera not supported in this browser.'); return;
+      }
+      try{
+        const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});
+        const track = stream.getVideoTracks()[0];
+        const imageCapture = new ImageCapture(track);
+        const bitmap = await imageCapture.grabFrame();
+        // draw to canvas -> blob
+        const canvas = document.createElement('canvas');
+        canvas.width = bitmap.width; canvas.height = bitmap.height; const ctx = canvas.getContext('2d');
+        ctx.drawImage(bitmap,0,0);
+        canvas.toBlob(blob=>{
+          if(blob) handleFile(new File([blob],'camera.jpg',{type:'image/jpeg'}));
+          // stop stream
+          track.stop();
+        }, 'image/jpeg', 0.9);
+      }catch(err){ console.error(err); alert('Could not access camera.'); }
+    });
+
+    // Submit -> simulate processing + fake results
+    submitBtn.addEventListener('click', ()=>{
+      if(!selectedFile){ alert('Please upload a photo first.'); return; }
+      modal.style.display='flex'; bar.style.width='0%';
+      // simulate progress
+      let progress=0; const t = setInterval(()=>{
+        progress += Math.random()*20;
+        if(progress>95) progress = 95;
+        bar.style.width = progress + '%';
+      }, 350);
+
+      // simulate network/AI processing delay
+      setTimeout(()=>{
+        clearInterval(t); bar.style.width='100%';
+        setTimeout(()=>{
+          modal.style.display='none';
+          showFakeResults();
+        },400);
+      }, 2200 + Math.random()*2200);
+    });
+
+    document.getElementById('cancelSearch').addEventListener('click', ()=>{ modal.style.display='none'; });
+
+    function showFakeResults(){
+      noResults.style.display='none';
+      resultsArea.innerHTML = '';
+      // Fake matches array
+      const matches = [
+        {name:'Unidentified - #A412', age:'~30', location:'Central Station', score:92, img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=1'},
+        {name:'R. Kumar', age:34, location:'Madurai', score:78, img:'https://images.unsplash.com/photo-1545996124-9b9b3bdd3f0e?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=2'},
+        {name:'A possible match', age:27, location:'Coimbatore', score:64, img:'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=3'}
+      ];
+
+      matches.forEach(m=>{
+        const node = document.createElement('div'); node.className='card';
+        node.innerHTML = `
+          <img src="${m.img}" alt="match">
+          <div>
+            <div style="font-weight:700">${m.name}</div>
+            <div class="muted tiny">Age: ${m.age} · Last seen: ${m.location}</div>
+          </div>
+          <div class="score">
+            <div class="val">${m.score}%</div>
+            <div class="muted tiny">Similarity score</div>
+            <div style="margin-top:8px"><button class="btn ghost" onclick="reportMatch('${m.name}', ${m.score})">Report</button></div>
+          </div>
+        `;
+        resultsArea.appendChild(node);
+      });
+
+      // add action area
+      const more = document.createElement('div'); more.className='card'; more.style.justifyContent='space-between';
+      more.innerHTML = `
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="tiny muted">Want to improve results? Add more photos or details.</div>
+        </div>
+        <div>
+          <button class="btn" onclick="addMorePhotos()">Add photos</button>
+        </div>
+      `;
+      resultsArea.appendChild(more);
+    }
+
+    // simple handlers (prototype)
+    function reportMatch(name, score){
+      alert('Report sent for "' + name + '" (score: ' + score + '%). Authorities will review.');
+    }
+    function addMorePhotos(){ alert('Open profile to add more photos (prototype).'); }
+
+    // quick search -- filters results locally (prototype)
+    document.getElementById('quickSearch').addEventListener('input', (e)=>{
+      const q = e.target.value.toLowerCase();
+      const cards = resultsArea.querySelectorAll('.card');
+      if(!cards.length){ return; }
+      cards.forEach(c=>{
+        const txt = c.textContent.toLowerCase();
+        c.style.display = txt.includes(q) ? 'flex' : 'none';
+      });
+      const visible = Array.from(cards).some(c=> c.style.display !== 'none');
+      noResults.style.display = visible ? 'none' : 'flex';
+    });
+
+    // accessibility: keyboard to open file
+    drop.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') fileInput.click(); });
+
+    // preserve small state: save draft
+    document.getElementById('saveDraft').addEventListener('click', ()=>{
+      const payload = {
+        name: document.getElementById('name').value,
+        age: document.getElementById('age').value,
+        lastSeen: document.getElementById('lastSeen').value,
+        location: document.getElementById('location').value,
+        details: document.getElementById('details').value
+      };
+      localStorage.setItem('mpdraft', JSON.stringify(payload));
+      alert('Draft saved locally in your browser.');
+    });
+
+    // load draft if present
+    window.addEventListener('load', ()=>{
+      try{
+        const d = JSON.parse(localStorage.getItem('mpdraft'));
+        if(d){ document.getElementById('name').value = d.name || ''; document.getElementById('age').value = d.age || ''; document.getElementById('lastSeen').value = d.lastSeen || ''; document.getElementById('location').value = d.location || ''; document.getElementById('details').value = d.details || ''; }
+      }catch(e){}
+    });
+  </script>
+</body>
+</html>

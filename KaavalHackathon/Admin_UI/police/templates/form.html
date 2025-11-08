@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form_type=='case' %}Add Case{% else %}Update Personnel{% endif %}</title>
+    <style>
+        body { background-color: #1c1c28; color: #fff; font-family: Arial; padding: 50px; }
+        form { background-color: #22223b; padding: 30px; border-radius: 10px; max-width: 400px; margin: auto; }
+        input, select { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: none; }
+        button { padding: 10px 20px; background-color: #4a90e2; border: none; color: #fff; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #357ab8; }
+        h2 { text-align: center; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <form method="POST" onsubmit="return showConfirmation()">
+        {% if form_type == 'case' %}
+            <h2>Add New Case</h2>
+            <input type="text" name="title" placeholder="Case Title" required>
+            <select name="status" required>
+                <option value="Active">Active</option>
+                <option value="Solved">Solved</option>
+            </select>
+            <input type="date" name="date_created" required>
+            <select name="crime_type" required>
+                <option value="Theft">Theft</option>
+                <option value="Assault">Assault</option>
+                <option value="Fraud">Fraud</option>
+                <option value="Cybercrime">Cybercrime</option>
+                <option value="Other">Other</option>
+            </select>
+            
+            <ul>
+    {% for case in cases %}
+        <li>Case #{{ case['case_id'] }}: {{ case['title'] }} ({{ case['status'] }}) - Type: {{ case['crime_type'] }}</li>
+    {% endfor %}
+</ul>
+        {% else %}
+            <h2>Add / Update Personnel</h2>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="role" placeholder="Role" required>
+            <input type="date" name="joined_date" required>
+        {% endif %}
+        <button type="submit">Submit</button>
+    </form>
+<script>
+function showConfirmation() {
+    alert("Personnel updated successfully!");
+    return true; // allow form submission
+}
+</script>
+    
+    
+    
+    
+</body>
+</html>
